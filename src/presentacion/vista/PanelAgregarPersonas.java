@@ -6,7 +6,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import dao.PersonaDao;
 import daoImpl.Conexion;
+import daoImpl.PersonaDaoImpl;
 import entidad.Persona;
 
 import java.awt.event.WindowAdapter;
@@ -14,6 +16,10 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class PanelAgregarPersonas extends JPanel  {
@@ -22,9 +28,9 @@ public class PanelAgregarPersonas extends JPanel  {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textFieldNombre;
-	private JTextField textFieldApellido;
-	private JTextField textFieldDni;
+	private JTextField txtNombre;
+	private JTextField txtApellido;
+	private JTextField txtDni;
 	private JButton btnAgregar;
 	
 
@@ -35,32 +41,32 @@ public class PanelAgregarPersonas extends JPanel  {
 	}
 	 	
 	public JTextField getTextFieldNombre() {
-		return textFieldNombre;
+		return txtNombre;
 	}
 
 
 	public void setTextFieldNombre(JTextField textFieldNombre) {
-		this.textFieldNombre = textFieldNombre;
+		this.txtNombre = textFieldNombre;
 	}
 
 
 	public JTextField getTextFieldApellido() {
-		return textFieldApellido;
+		return txtApellido;
 	}
 
 
 	public void setTextFieldApellido(JTextField textFieldApellido) {
-		this.textFieldApellido = textFieldApellido;
+		this.txtApellido = textFieldApellido;
 	}
 
 
 	public JTextField getTextFieldDni() {
-		return textFieldDni;
+		return txtDni;
 	}
 
 
 	public void setTextFieldDni(JTextField textFieldDni) {
-		this.textFieldDni = textFieldDni;
+		this.txtDni = textFieldDni;
 	}
 
 
@@ -81,35 +87,96 @@ public class PanelAgregarPersonas extends JPanel  {
 		{
 		setLayout(null);
 		
-		textFieldNombre = new JTextField();
-		textFieldNombre.setBounds(182, 40, 150, 20);
-		add(textFieldNombre);
-		textFieldNombre.setColumns(10);
+		txtNombre = new JTextField();
+		//evento que permite que solo se ingresen letras y espacios --> 100%
+		txtNombre.addKeyListener(new KeyAdapter() 
+		{
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE) && !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE))
+				{
+					e.consume();
+				} 
+			}
+		});
+		txtNombre.setBounds(182, 71, 150, 20);
+		add(txtNombre);
+		txtNombre.setColumns(10);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(108, 42, 46, 17);
+		lblNombre.setBounds(108, 73, 46, 17);
 		add(lblNombre);
 		
-		textFieldApellido = new JTextField();
-		textFieldApellido.setBounds(182, 71, 151, 20);
-		add(textFieldApellido);
-		textFieldApellido.setColumns(10);
+		txtApellido = new JTextField();
+		//evento que permite que solo se ingresen letras y espacios --> 100%
+		txtApellido.addKeyListener(new KeyAdapter() 
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE) && !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE))
+				{
+					e.consume();
+				} 
+			}
+		});
+		txtApellido.setBounds(182, 102, 151, 20);
+		add(txtApellido);
+		txtApellido.setColumns(10);
 		
 		JLabel lblApellido = new JLabel("Apellido");
-		lblApellido.setBounds(108, 74, 46, 14);
+		lblApellido.setBounds(108, 105, 46, 14);
 		add(lblApellido);
 		
-		textFieldDni = new JTextField();
-		textFieldDni.setBounds(182, 102, 150, 20);
-		add(textFieldDni);
-		textFieldDni.setColumns(10);
+		txtDni = new JTextField();
+		//evento que permite que solo se ingresen numeros --> 100%
+		txtDni.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char carac= e.getKeyChar();
+				
+				if(Character.isLetter(carac)  || (e.getKeyChar() == KeyEvent.VK_SPACE))
+				{
+					e.consume();
+				}
+			}
+		});
+		txtDni.setBounds(182, 40, 150, 20);
+		add(txtDni);
+		txtDni.setColumns(10);
 		
 		JLabel lblDni = new JLabel("Dni");
-		lblDni.setBounds(108, 105, 46, 14);
+		lblDni.setBounds(108, 43, 46, 14);
 		add(lblDni);
 	
 		
 		btnAgregar = new JButton("Aceptar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if(!txtNombre.getText().equals("")&& !txtApellido.getText().equals("") && !txtDni.getText().equals(""))
+				{
+					Persona p= new Persona();
+					PersonaDaoImpl pdi= new PersonaDaoImpl();
+					
+					p.setDni(txtDni.getText());
+					p.setNombre(txtNombre.getText());
+					p.setApellido(txtApellido.getText());
+
+					pdi.insert(p);
+					JOptionPane.showMessageDialog(null, "Persona agregada correctamente");
+					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Debes completar todos los campos para continuar");
+				}
+				
+			}
+		});
 		btnAgregar.setBounds(108, 133, 89, 23);
 		add(btnAgregar);
 	}

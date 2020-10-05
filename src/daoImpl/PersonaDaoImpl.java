@@ -70,7 +70,7 @@ public class PersonaDaoImpl implements PersonaDao {
 		return isdeleteExitoso;
 	}
 	
-	public List<Persona> readAll()
+	public ArrayList<Persona> readAll()
 	{
 		PreparedStatement statement;
 		ResultSet resultSet; //Guarda el resultado de la query

@@ -15,8 +15,36 @@ public class PersonaDaoImpl implements PersonaDao {
 	private static final String insert = "INSERT INTO personas(Dni, Nombre, Apellido) VALUES(?, ?, ?)";
 	private static final String delete = "DELETE FROM personas WHERE Dni = ?";
 	private static final String readall = "SELECT * FROM Personas";
+	private static final String update = "update personas set dni=?, nombre=? , apellido=? where dni=?";
 	
-	//Falta funcion MODIFICAR
+	//metodo para modificar una persona
+	public boolean modificar(int dni, String nuevoNombre, String nuevoApellido, int nuevoDni)
+	{
+		PreparedStatement statement;
+		Connection conexion = Conexion.getConexion().getSQLConexion();
+		boolean isUpdateExitoso = false;
+		
+		try 
+		{
+			statement= conexion.prepareStatement(update);
+			statement.setInt(1, nuevoDni);
+			statement.setString(2, nuevoNombre);
+			statement.setString(3, nuevoApellido);
+			statement.setInt(4, dni);
+			statement.executeQuery();
+
+			if(statement.executeUpdate() > 0)
+			{
+				conexion.commit();
+				isUpdateExitoso = true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return isUpdateExitoso;
+	}
 		
 	public boolean insert(Persona persona)
 	{
@@ -29,6 +57,7 @@ public class PersonaDaoImpl implements PersonaDao {
 			statement.setString(1, persona.getDni());
 			statement.setString(2, persona.getNombre());
 			statement.setString(3, persona.getApellido());
+			
 			if(statement.executeUpdate() > 0)
 			{
 				conexion.commit();
@@ -38,13 +67,15 @@ public class PersonaDaoImpl implements PersonaDao {
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
-			try {
+			try 
+			{
 				conexion.rollback();
-			} catch (SQLException e1) {
+			} 
+			catch (SQLException e1) 
+			{
 				e1.printStackTrace();
 			}
 		}
-		
 		return isInsertExitoso;
 	}
 	

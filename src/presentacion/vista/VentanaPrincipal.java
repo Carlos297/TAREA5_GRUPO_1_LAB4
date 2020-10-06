@@ -16,9 +16,10 @@ public class VentanaPrincipal  extends JFrame {
 	private JMenuItem menuEliminar;
 	private JMenuItem menuListar;
 	
-	public VentanaPrincipal() {
+	public VentanaPrincipal() 
+	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 783, 494);
+		setBounds(100, 100, 625, 494);
 		
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -32,10 +33,10 @@ public class VentanaPrincipal  extends JFrame {
 		menuModificar = new JMenuItem("Modificar"); //Falta hacer
 		mnPersonas.add(menuModificar);
 		
-		menuEliminar = new JMenuItem("Eliminar"); //Eliminar del JLIST
+		menuEliminar = new JMenuItem("Eliminar");
 		mnPersonas.add(menuEliminar);
 		
-		menuListar = new JMenuItem("Lista"); //Falta hacer
+		menuListar = new JMenuItem("Lista");
 		mnPersonas.add(menuListar);
 		
 		

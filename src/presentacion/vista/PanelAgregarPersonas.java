@@ -13,6 +13,7 @@ import entidad.Persona;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,22 +23,20 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
-public class PanelAgregarPersonas extends JPanel  {
+public class PanelAgregarPersonas extends JPanel  
+{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JTextField txtDni;
 	private JButton btnAgregar;
-	
 
-	 public PanelAgregarPersonas() {
-	
+	 public PanelAgregarPersonas()
+	 {
 		super();
 		initialize();
+		
 	}
 	 	
 	public JTextField getTextFieldNombre() {

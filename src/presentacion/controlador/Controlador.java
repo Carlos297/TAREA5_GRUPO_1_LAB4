@@ -9,12 +9,14 @@ import negocio.PersonaNegocio;
 import presentacion.vista.PanelAgregarPersonas;
 import presentacion.vista.PanelEliminarPersonas;
 import presentacion.vista.PanelListarPersonas;
+import presentacion.vista.PanelModificarPersonas;
 import presentacion.vista.VentanaPrincipal;
 
 public class Controlador implements ActionListener{
 	
 	private VentanaPrincipal ventanaPrincipal;
 	private PanelAgregarPersonas pnlIngresoPersonas;
+	private PanelModificarPersonas pnlModificar;
 	private PanelEliminarPersonas pnlEliminarPersonas;
 	private PanelListarPersonas pnlListarPersonas;
 	private PersonaNegocio pNeg;
@@ -29,6 +31,7 @@ public class Controlador implements ActionListener{
 		//Instancio los paneles
 		this.pnlIngresoPersonas = new PanelAgregarPersonas();
 		this.pnlEliminarPersonas = new PanelEliminarPersonas();
+		this.pnlModificar= new PanelModificarPersonas();
 		
 		
 		//Enlazo todos los eventos
@@ -37,17 +40,18 @@ public class Controlador implements ActionListener{
 		this.ventanaPrincipal.getMenuAgregar().addActionListener(a->EventoClickMenu_AbrirPanel_AgregarPersona(a));
 		this.ventanaPrincipal.getMenuEliminar().addActionListener(a->EventoClickMenu_AbrirPanel_EliminarPersona(a));
 		this.ventanaPrincipal.getMenuListar().addActionListener(a->EventoClickMenu_AbrirPanel_ListarPersona(a));
+		this.ventanaPrincipal.getMenuModificar().addActionListener(a->EventoClickMenu_AbrirPanel_ModificarPersona(a));
 
 		//Eventos PanelAgregarPersonas
 		 this.pnlIngresoPersonas.getBtnAgregar().addActionListener(a->EventoClickBoton_AgregarPesona_PanelAgregarPersonas(a));
 		
-			
 		//Eventos PanelEliminarPersonas
 		 this.pnlEliminarPersonas.getBtnEliminar().addActionListener(s->EventoClickBoton_BorrarPesona_PanelEliminarPersonas(s));
 		 
 		}
 	
-	private void EventoClickMenu_AbrirPanel_ListarPersona(ActionEvent a) {
+	private void EventoClickMenu_AbrirPanel_ListarPersona(ActionEvent a) 
+	{
 		this.pnlListarPersonas = new PanelListarPersonas();
 		ventanaPrincipal.getContentPane().removeAll();
 		ventanaPrincipal.getContentPane().add(pnlListarPersonas);
@@ -72,9 +76,18 @@ public class Controlador implements ActionListener{
 		ventanaPrincipal.getContentPane().repaint();
 		ventanaPrincipal.getContentPane().revalidate();
 	}
+	
+	public void EventoClickMenu_AbrirPanel_ModificarPersona(ActionEvent a)
+	{
+		ventanaPrincipal.getContentPane().removeAll();
+		ventanaPrincipal.getContentPane().add(pnlModificar);
+		ventanaPrincipal.getContentPane().repaint();
+		ventanaPrincipal.getContentPane().revalidate();
+	}
 
 	//EventoClickBoton agregar persona en PanelAgregarPersonas
-	private void EventoClickBoton_AgregarPesona_PanelAgregarPersonas(ActionEvent a) {
+	private void EventoClickBoton_AgregarPesona_PanelAgregarPersonas(ActionEvent a) 
+	{
 		
 	}
 	
@@ -94,11 +107,10 @@ public class Controlador implements ActionListener{
 			}
 			else
 			{
-				 mensaje="Id inexistente";
+				 mensaje="DNI inexistente";
 			}
 			this.pnlEliminarPersonas.getTxtDniEliminar().setText("");
 			this.pnlEliminarPersonas.mostrarMensaje(mensaje);
-			
 		}
 		
 	/*
@@ -107,20 +119,15 @@ public class Controlador implements ActionListener{
 		this.personasEnTabla = (ArrayList<Persona>) pNeg.readAll();
 		this.pnlIngresoPersonas.llenarTabla(this.personasEnTabla);
 	}*/
-
-
-
 	
 	public void inicializar()
 	{
 		this.ventanaPrincipal.setVisible(true);;
 	}
 	
-
-	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e) 
+	{
 		
 	}
 }

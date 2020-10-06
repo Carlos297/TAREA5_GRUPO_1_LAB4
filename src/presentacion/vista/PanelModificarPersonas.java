@@ -16,6 +16,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ListSelectionModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PanelModificarPersonas extends JPanel
 {
@@ -26,6 +28,7 @@ public class PanelModificarPersonas extends JPanel
 	private PersonaDaoImpl pDao;
 	ArrayList<Persona> personas;
 	private DefaultListModel listModel;
+	private JList<Persona> listPersonas;
 	
 	public PanelModificarPersonas() 
 	{
@@ -47,6 +50,13 @@ public class PanelModificarPersonas extends JPanel
 		txtDni.setColumns(10);
 		
 		JButton btnModificar = new JButton("MODIFICAR");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+			}
+			
+		});
 		btnModificar.setBounds(340, 246, 100, 23);
 		add(btnModificar);
 		
@@ -55,17 +65,22 @@ public class PanelModificarPersonas extends JPanel
 		add(lblNewLabel);
 		
 		
-		JList listPersonas = new JList<Persona>();
-		listPersonas.setBounds(57, 207, 311, -141);
+		listPersonas = new JList<Persona>();
+		
+		listPersonas.setBounds(48, 65, 311, 141);
+		add(listPersonas);
 		listModel= new DefaultListModel();
 		listPersonas.addListSelectionListener(new ListSelectionListener() 
 		{
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) 
 			{
+				Persona per_modificar = new Persona();
 				 if(listPersonas.getSelectedIndex()!=-1)
 	                {
 	                    System.out.println("troll haunter");
+	                    per_modificar = (Persona) listModel.getElementAt(listPersonas.getSelectedIndex());
+	                    
 	                }
 			}
 		});
@@ -76,7 +91,6 @@ public class PanelModificarPersonas extends JPanel
         listModel.clear();
         for(int i=0; i<personas.size(); i++) 
         {
-        	
             listModel.add(i, personas.get(i));
         }
         System.out.println(listModel.size());

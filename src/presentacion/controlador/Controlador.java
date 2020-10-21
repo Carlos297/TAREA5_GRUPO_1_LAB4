@@ -49,7 +49,7 @@ public class Controlador implements ActionListener{
 		 this.pnlEliminarPersonas.getBtnEliminar().addActionListener(s->EventoClickBoton_BorrarPesona_PanelEliminarPersonas(s));
 		 
 		//Eventos PanelModificarPersonas (ACA ESTA EL PROBLEMA)!!!!******************
-		 this.pnlModificar.getBtnModificar().addActionListener(a->EventoClickBoton_ModificarPesona_PanelModificarPersonas(a));
+		// this.pnlModificar.getBtnModificar().addActionListener(a->EventoClickBoton_ModificarPesona_PanelModificarPersonas(a));
 		
 	}
 	

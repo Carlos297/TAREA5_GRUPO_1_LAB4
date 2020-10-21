@@ -16,6 +16,7 @@ public class PersonaDaoImpl implements PersonaDao {
 	private static final String delete = "DELETE FROM personas WHERE Dni = ?";
 	private static final String readall = "SELECT * FROM Personas";
 	private static final String update = "update personas set dni=?, nombre=? , apellido=? where dni=?";
+	private static final String existe = "SELECT * FROM Personas where dni= ?";
 	
 	//metodo para modificar una persona
 	public boolean modificar(Persona persona)
@@ -123,6 +124,34 @@ public class PersonaDaoImpl implements PersonaDao {
 		return personas;
 	}
 	
+	//metodo para verificar que el dni no exista y se pueda agregar la persona. Si devuelve true, existe la persona
+	public boolean verificarPersona(String dni)
+	{
+		PreparedStatement statement;
+		Connection conexion = Conexion.getConexion().getSQLConexion();
+		boolean existePersona = false;
+		
+		int dnii= Integer.parseInt(dni);
+		
+		try 
+		{
+			statement= conexion.prepareStatement(existe);
+			statement.setInt(1, dnii);
+			ResultSet rs= statement.executeQuery();
+
+			while(rs.next())
+			{
+				conexion.commit();
+				existePersona = true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return existePersona;
+	}
+	
 	private Persona getPersona(ResultSet resultSet) throws SQLException
 	{
 		String dni = resultSet.getString("Dni");
@@ -130,5 +159,6 @@ public class PersonaDaoImpl implements PersonaDao {
 		String apellido = resultSet.getString("Apellido");
 		return new Persona(dni, nombre, apellido);
 	}
+
 
 }

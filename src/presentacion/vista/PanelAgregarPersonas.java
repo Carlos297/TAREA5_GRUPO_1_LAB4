@@ -153,21 +153,33 @@ public class PanelAgregarPersonas extends JPanel
 	
 		
 		btnAgregar = new JButton("Aceptar");
-		btnAgregar.addActionListener(new ActionListener() {
+		btnAgregar.addActionListener(new ActionListener() 
+		{
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if(!txtNombre.getText().equals("")&& !txtApellido.getText().equals("") && !txtDni.getText().equals(""))
 				{
-					Persona p= new Persona();
 					PersonaDaoImpl pdi= new PersonaDaoImpl();
+					String dni=txtDni.getText();
 					
-					p.setDni(txtDni.getText());
-					p.setNombre(txtNombre.getText());
-					p.setApellido(txtApellido.getText());
-
-					pdi.insert(p);
-					JOptionPane.showMessageDialog(null, "Persona agregada correctamente");
-					
+					if(pdi.verificarPersona(dni)==false)
+					{
+						Persona p= new Persona();
+						
+						p.setDni(txtDni.getText());
+						p.setNombre(txtNombre.getText());
+						p.setApellido(txtApellido.getText());
+	
+						pdi.insert(p);
+						JOptionPane.showMessageDialog(null, "Persona agregada correctamente");
+						txtDni.setText("");
+						txtApellido.setText("");
+						txtNombre.setText("");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Número de dni ya existe.");
+					}
 				}
 				else
 				{

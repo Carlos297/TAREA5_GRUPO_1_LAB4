@@ -18,7 +18,7 @@ public class PersonaDaoImpl implements PersonaDao {
 	private static final String update = "update personas set dni=?, nombre=? , apellido=? where dni=?";
 	
 	//metodo para modificar una persona
-	public boolean modificar(int dni, String nuevoNombre, String nuevoApellido, int nuevoDni)
+	public boolean modificar(Persona persona)
 	{
 		PreparedStatement statement;
 		Connection conexion = Conexion.getConexion().getSQLConexion();
@@ -27,11 +27,11 @@ public class PersonaDaoImpl implements PersonaDao {
 		try 
 		{
 			statement= conexion.prepareStatement(update);
-			statement.setInt(1, nuevoDni);
-			statement.setString(2, nuevoNombre);
-			statement.setString(3, nuevoApellido);
-			statement.setInt(4, dni);
-			statement.executeQuery();
+			statement.setString(1, persona.getDni());
+			statement.setString(2, persona.getNombre());
+			statement.setString(3, persona.getApellido());
+			statement.setString(4, persona.getDni());
+			statement.executeUpdate();
 
 			if(statement.executeUpdate() > 0)
 			{

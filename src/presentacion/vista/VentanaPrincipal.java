@@ -30,7 +30,7 @@ public class VentanaPrincipal  extends JFrame {
 		menuAgregar = new JMenuItem("Agregar");
 		mnPersonas.add(menuAgregar);
 		
-		menuModificar = new JMenuItem("Modificar"); //Falta hacer
+		menuModificar = new JMenuItem("Modificar");
 		mnPersonas.add(menuModificar);
 		
 		menuEliminar = new JMenuItem("Eliminar");

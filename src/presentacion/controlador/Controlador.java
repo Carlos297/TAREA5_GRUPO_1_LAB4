@@ -20,7 +20,7 @@ public class Controlador implements ActionListener{
 	private PanelEliminarPersonas pnlEliminarPersonas;
 	private PanelListarPersonas pnlListarPersonas;
 	private PersonaNegocio pNeg;
-	//private ArrayList<Persona> personasEnTabla;
+	private ArrayList<Persona> personasLista;
 
 	public Controlador(VentanaPrincipal vista, PersonaNegocio pNeg)
 	{
@@ -48,8 +48,12 @@ public class Controlador implements ActionListener{
 		//Eventos PanelEliminarPersonas
 		 this.pnlEliminarPersonas.getBtnEliminar().addActionListener(s->EventoClickBoton_BorrarPesona_PanelEliminarPersonas(s));
 		 
-		}
+		//Eventos PanelModificarPersonas (ACA ESTA EL PROBLEMA)!!!!******************
+		 this.pnlModificar.getBtnModificar().addActionListener(a->EventoClickBoton_ModificarPesona_PanelModificarPersonas(a));
+		
+	}
 	
+
 	private void EventoClickMenu_AbrirPanel_ListarPersona(ActionEvent a) 
 	{
 		this.pnlListarPersonas = new PanelListarPersonas();
@@ -81,6 +85,8 @@ public class Controlador implements ActionListener{
 	{
 		ventanaPrincipal.getContentPane().removeAll();
 		ventanaPrincipal.getContentPane().add(pnlModificar);
+		//Carga la lista de PANELMODIFICAR
+		refrescarListaPersona();
 		ventanaPrincipal.getContentPane().repaint();
 		ventanaPrincipal.getContentPane().revalidate();
 	}
@@ -88,6 +94,32 @@ public class Controlador implements ActionListener{
 	//EventoClickBoton agregar persona en PanelAgregarPersonas
 	private void EventoClickBoton_AgregarPesona_PanelAgregarPersonas(ActionEvent a) 
 	{
+		
+	}
+	
+	//EventoClickBoton modificar persona en PanelModificarPersonas
+	public void EventoClickBoton_ModificarPesona_PanelModificarPersonas(ActionEvent s) 
+	{
+		String dni_Modificar = this.pnlModificar.getTxtDni().getText();
+		String nombre_Modificar = this.pnlModificar.getTxtNombre().getText();
+		String apellido_Modificar = this.pnlModificar.getTxtApellido().getText();
+		Persona personaMod = new Persona();
+		personaMod.setDni(dni_Modificar);
+		personaMod.setNombre(nombre_Modificar);
+		personaMod.setApellido(apellido_Modificar);
+		boolean estado=false;
+		String mensaje;
+		estado = pNeg.modificar(personaMod);
+		if(estado==true)
+		{
+			mensaje="Persona MODIFICADA con exito";	
+			refrescarListaPersona();
+		}
+		else
+		{
+			 mensaje="NO SE PUDO MODIFICAR";
+		}
+		this.pnlModificar.mostrarMensaje(mensaje);
 		
 	}
 	
@@ -113,12 +145,12 @@ public class Controlador implements ActionListener{
 			this.pnlEliminarPersonas.mostrarMensaje(mensaje);
 		}
 		
-	/*
-	private void refrescarTabla()
+	
+	private void refrescarListaPersona()
 	{
-		this.personasEnTabla = (ArrayList<Persona>) pNeg.readAll();
-		this.pnlIngresoPersonas.llenarTabla(this.personasEnTabla);
-	}*/
+		this.personasLista = (ArrayList<Persona>) pNeg.readAll();
+		this.pnlModificar.listarPersonasJList(this.personasLista);
+	}
 	
 	public void inicializar()
 	{

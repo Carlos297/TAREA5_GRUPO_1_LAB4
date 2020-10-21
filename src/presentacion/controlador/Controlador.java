@@ -2,8 +2,16 @@ package presentacion.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import daoImpl.PersonaDaoImpl;
 import entidad.Persona;
 import negocio.PersonaNegocio;
 import presentacion.vista.PanelAgregarPersonas;
@@ -44,16 +52,64 @@ public class Controlador implements ActionListener{
 
 		//Eventos PanelAgregarPersonas
 		 this.pnlIngresoPersonas.getBtnAgregar().addActionListener(a->EventoClickBoton_AgregarPesona_PanelAgregarPersonas(a));
+		//evento que permite que solo se ingresen letras y espacios --> 100%
+		 this.pnlIngresoPersonas.getTextFieldNombre().addKeyListener(new KeyAdapter() {
+			 
+				public void keyTyped(KeyEvent e) 
+				{
+					if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE) && !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE))
+					{
+						e.consume();
+					} 
+				}
+		});
+		//evento que permite que solo se ingresen letras y espacios --> 100%
+		 this.pnlIngresoPersonas.getTextFieldApellido().addKeyListener(new KeyAdapter() {
+			 
+				public void keyTyped(KeyEvent e)
+				{
+					if (!Character.isLetter(e.getKeyChar()) && !(e.getKeyChar() == KeyEvent.VK_SPACE) && !(e.getKeyChar() == KeyEvent.VK_BACK_SPACE))
+					{
+						e.consume();
+					} 
+				}
+		});
+		//evento que permite que solo se ingresen numeros --> 100%
+		 this.pnlIngresoPersonas.getTextFieldDni().addKeyListener(new KeyAdapter() {
+			 
+				public void keyTyped(KeyEvent e) 
+				{
+					char carac= e.getKeyChar();
+					
+					if(Character.isLetter(carac)  || (e.getKeyChar() == KeyEvent.VK_SPACE))
+					{
+						e.consume();
+					}
+				}
+		});
 		
 		//Eventos PanelEliminarPersonas
 		 this.pnlEliminarPersonas.getBtnEliminar().addActionListener(s->EventoClickBoton_BorrarPesona_PanelEliminarPersonas(s));
+		 this.pnlEliminarPersonas.getTxtDniEliminar().addKeyListener(new KeyAdapter() {
+			 
+				public void keyTyped(KeyEvent e) 
+				{
+					char carac= e.getKeyChar();
+					
+					if(Character.isLetter(carac)  || (e.getKeyChar() == KeyEvent.VK_SPACE))
+					{
+						e.consume();
+					}
+				}
+		});
 		 
 		//Eventos PanelModificarPersonas (ACA ESTA EL PROBLEMA)!!!!******************
 		// this.pnlModificar.getBtnModificar().addActionListener(a->EventoClickBoton_ModificarPesona_PanelModificarPersonas(a));
-		
+
 	}
 	
-
+	
+	
 	private void EventoClickMenu_AbrirPanel_ListarPersona(ActionEvent a) 
 	{
 		this.pnlListarPersonas = new PanelListarPersonas();
@@ -94,6 +150,39 @@ public class Controlador implements ActionListener{
 	//EventoClickBoton agregar persona en PanelAgregarPersonas
 	private void EventoClickBoton_AgregarPesona_PanelAgregarPersonas(ActionEvent a) 
 	{
+		String txtNombre = this.pnlIngresoPersonas.getTextFieldNombre().getText();
+		String txtApellido = this.pnlIngresoPersonas.getTextFieldApellido().getText();
+		String txtDni = this.pnlIngresoPersonas.getTextFieldDni().getText();
+
+			if(!txtNombre.equals("")&& !txtApellido.equals("") && !txtDni.equals(""))
+			{
+				PersonaDaoImpl pdi= new PersonaDaoImpl();
+				String dni=txtDni;
+				
+				if(pdi.verificarPersona(dni)==false)
+				{
+					Persona p= new Persona();
+					
+					p.setDni(txtDni);
+					p.setNombre(txtNombre);
+					p.setApellido(txtApellido);
+
+					pdi.insert(p);
+					JOptionPane.showMessageDialog(null, "Persona agregada correctamente");
+					this.pnlIngresoPersonas.getTextFieldDni().setText("");
+					this.pnlIngresoPersonas.getTextFieldNombre().setText("");
+					this.pnlIngresoPersonas.getTextFieldApellido().setText("");
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Número de dni ya existe.");
+				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Debes completar todos los campos para continuar");
+			}
+			
 		
 	}
 	

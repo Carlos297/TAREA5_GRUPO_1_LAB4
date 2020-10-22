@@ -38,6 +38,16 @@ public class PersonaNegocioImpl implements PersonaNegocio {
 	public List<Persona> readAll() {
 		return pdao.readAll();
 	}
+
+	@Override
+	public boolean insert(Persona persona) {
+		boolean estado=false;
+		if(persona.getDni().trim().length()>0 )
+		{
+			estado=pdao.insert(persona);
+		}
+		return estado;
+	}
 	
 	
 }

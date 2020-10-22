@@ -33,8 +33,6 @@ public class PanelModificarPersonas extends JPanel
 	private JButton btnModificar;
 	private PersonaNegocioImpl pNegImpl;
 	
-	//private PersonaDaoImpl pDao;
-	//private ArrayList<Persona> personas; //DESPUES BORRAR
 	private DefaultListModel listModel;
 	public JList<Persona> listPersonas;
 	
@@ -101,17 +99,18 @@ public class PanelModificarPersonas extends JPanel
 		this.setLayout(null);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(131, 246, 86, 20);
+		txtNombre.setBounds(48, 272, 95, 20);
 		add(txtNombre);
 		txtNombre.setColumns(10);
 		
 		txtApellido = new JTextField();
-		txtApellido.setBounds(244, 246, 86, 20);
+		txtApellido.setBounds(166, 272, 95, 20);
 		add(txtApellido);
 		txtApellido.setColumns(10);
 		
 		txtDni = new JTextField();
-		txtDni.setBounds(10, 246, 86, 20);
+		txtDni.setBounds(282, 272, 95, 20);
+		txtDni.setEnabled(false);
 		add(txtDni);
 		txtDni.setColumns(10);
 		
@@ -121,35 +120,19 @@ public class PanelModificarPersonas extends JPanel
 		
 		listPersonas = new JList<Persona>();
 
-		listPersonas.setBounds(48, 65, 311, 141);		
+		listPersonas.setBounds(48, 65, 447, 196);		
 		listModel= new DefaultListModel();
 		
 		btnModificar = new JButton("Modificar");
 
-		btnModificar.setBounds(340, 246, 100, 23);
+		btnModificar.setBounds(395, 271, 100, 23);
 		add(btnModificar);
 		
-
-		//SELECCIONAR PERSONA Y MOSTRAR EN LOS JTEXTFIELD
-		listPersonas.addListSelectionListener(new ListSelectionListener() 
-		{
-			@Override
-			public void valueChanged(ListSelectionEvent arg0) 
-			{
-				Persona per_modificar = new Persona();
-				 if(listPersonas.getSelectedIndex()!=-1)
-	                {
-	                    per_modificar = (Persona) listModel.getElementAt(listPersonas.getSelectedIndex());
-	                    txtDni.setText(per_modificar.getDni());
-	                    txtNombre.setText(per_modificar.getNombre());
-	                    txtApellido.setText(per_modificar.getApellido());
-	                }
-			}
-		});
 		add(listPersonas);
 	}
 	
 	//LISTAR PERSONAS EN EL JLIST
+
 	public void listarPersonasJList(ArrayList<Persona> personas)
 	{
 
@@ -158,11 +141,11 @@ public class PanelModificarPersonas extends JPanel
         {
             listModel.add(i, personas.get(i));
         }
-        //System.out.println(listModel.size());
         listPersonas.setModel(listModel);
 	}
 	public void mostrarMensaje(String mensaje)
 	{
 		JOptionPane.showMessageDialog(null, mensaje);
 	}
+	
 }

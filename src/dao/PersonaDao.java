@@ -11,6 +11,6 @@ public interface PersonaDao {
 	public boolean modificar(Persona persona_a_modificar,String dni);
 	public List<Persona> readAll();
 	
-	//Falta funcion MODIFICAR
+	
 
 }

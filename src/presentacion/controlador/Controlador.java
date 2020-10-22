@@ -104,8 +104,24 @@ public class Controlador implements ActionListener{
 				}
 		});
 		 
-		//Eventos PanelModificarPersonas (ACA ESTA EL PROBLEMA)!!!!******************
+		//Eventos PanelModificarPersonas
 		this.pnlModificar.getBtnModificar().addActionListener(a->EventoClickBoton_ModificarPesona_PanelModificarPersonas(a));
+		this.pnlModificar.getListPersonas().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				Persona per_modificar = new Persona();
+				
+				 if(pnlModificar.getListPersonas().getSelectedIndex()!=-1)
+	                {
+	                    per_modificar = (Persona) pnlModificar.getListModel().getElementAt(pnlModificar.getListPersonas().getSelectedIndex());
+	                    pnlModificar.getTxtDni().setText(per_modificar.getDni());
+	                    pnlModificar.getTxtNombre().setText(per_modificar.getNombre());
+	                    pnlModificar.getTxtApellido().setText(per_modificar.getApellido());
+	                }
+				
+			}
+		});
 
 	}
 	
@@ -168,8 +184,7 @@ public class Controlador implements ActionListener{
 					p.setDni(txtDni);
 					p.setNombre(txtNombre);
 					p.setApellido(txtApellido);
-
-					pdi.insert(p);
+					pNeg.insert(p);
 					JOptionPane.showMessageDialog(null, "Persona agregada correctamente");
 					this.pnlIngresoPersonas.getTextFieldDni().setText("");
 					this.pnlIngresoPersonas.getTextFieldNombre().setText("");
@@ -178,6 +193,7 @@ public class Controlador implements ActionListener{
 				else
 				{
 					JOptionPane.showMessageDialog(null, "Número de dni ya existe.");
+					this.pnlIngresoPersonas.getTextFieldDni().setText("");
 				}
 			}
 			else
@@ -191,28 +207,47 @@ public class Controlador implements ActionListener{
 	//EventoClickBoton modificar persona en PanelModificarPersonas	
 	public void EventoClickBoton_ModificarPesona_PanelModificarPersonas(ActionEvent s) 
 	{
-		String dni_Modificar = this.pnlModificar.getTxtDni().getText();
+		String dni_Modificar = this.pnlModificar.getTxtDni().getText();;
 		String nombre_Modificar = this.pnlModificar.getTxtNombre().getText();
 		String apellido_Modificar = this.pnlModificar.getTxtApellido().getText();
-		String dniOriginal = this.pnlModificar.listPersonas.getSelectedValue().getDni();
+		String dniOriginal=this.pnlModificar.getListPersonas().getSelectedValue().getDni();
+		String mensaje="";
+				
 		Persona personaMod = new Persona();
-		personaMod.setDni(dni_Modificar);
-		personaMod.setNombre(nombre_Modificar);
-		personaMod.setApellido(apellido_Modificar);
+		
 		boolean estado=false;
-		String mensaje;
-		//Para verificar que datos estan viajando
-		//JOptionPane.showMessageDialog(null, personaMod+" "+dniOriginal);
-		estado = pNeg.modificar(personaMod,dniOriginal);
-		if(estado==true)
-		{
-			mensaje="Persona MODIFICADA con exito";	
-			refrescarListaPersona();
+		
+		if(!dni_Modificar.equals("") && !nombre_Modificar.equals("") && !apellido_Modificar.equals("")) {
+			
+			personaMod.setDni(dni_Modificar);
+			personaMod.setNombre(nombre_Modificar);
+			personaMod.setApellido(apellido_Modificar);
+			
+			
+			//Para verificar que datos estan viajando
+			//JOptionPane.showMessageDialog(null, personaMod+" "+dniOriginal);
+			if(personaMod != null)
+				estado = pNeg.modificar(personaMod,dniOriginal);
+			if(estado==true)
+			{
+				mensaje="Persona MODIFICADA con exito";	
+				refrescarListaPersona();
+				this.pnlModificar.getTxtDni().setText("");
+				this.pnlModificar.getTxtNombre().setText("");
+				this.pnlModificar.getTxtApellido().setText("");
+			}
+			else
+			{
+				 mensaje="NO SE PUDO MODIFICAR";
+			}
+			
+			
 		}
-		else
-		{
-			 mensaje="NO SE PUDO MODIFICAR";
-		}
+		
+			
+		
+		
+		
 		this.pnlModificar.mostrarMensaje(mensaje);
 		
 	}

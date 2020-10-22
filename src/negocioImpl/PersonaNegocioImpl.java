@@ -14,12 +14,12 @@ public class PersonaNegocioImpl implements PersonaNegocio {
 	
 	//Falta funcion MODIFICAR
 	@Override
-	public boolean modificar(Persona persona)
+	public boolean modificar(Persona persona,String dni)
 	{
 		boolean estado=false;
 		if(persona.getDni().trim().length()>0 )
 		{
-			estado=pdao.modificar(persona);
+			estado=pdao.modificar(persona,dni);
 		}
 		return estado;
 	}

@@ -12,6 +12,7 @@ import dao.PersonaDao;
 import daoImpl.PersonaDaoImpl;
 import entidad.Persona;
 import negocio.PersonaNegocio;
+import negocioImpl.PersonaNegocioImpl;
 
 import java.util.ArrayList;
 
@@ -30,12 +31,12 @@ public class PanelModificarPersonas extends JPanel
 	private JTextField txtApellido;
 	private JTextField txtDni;
 	private JButton btnModificar;
-	private PersonaNegocio pNeg;
+	private PersonaNegocioImpl pNegImpl;
 	
 	//private PersonaDaoImpl pDao;
 	//private ArrayList<Persona> personas; //DESPUES BORRAR
 	private DefaultListModel listModel;
-	private JList<Persona> listPersonas;
+	public JList<Persona> listPersonas;
 	
 	//CONSTRUCTOR
 	public PanelModificarPersonas() 
@@ -120,12 +121,10 @@ public class PanelModificarPersonas extends JPanel
 		
 		listPersonas = new JList<Persona>();
 
-		listPersonas.setBounds(48, 65, 311, 141);
-		add(listPersonas);
+		listPersonas.setBounds(48, 65, 311, 141);		
 		listModel= new DefaultListModel();
 		
-		JButton btnModificar = new JButton("MODIFICAR");
-
+		btnModificar = new JButton("Modificar");
 
 		btnModificar.setBounds(340, 246, 100, 23);
 		add(btnModificar);
@@ -140,9 +139,7 @@ public class PanelModificarPersonas extends JPanel
 				Persona per_modificar = new Persona();
 				 if(listPersonas.getSelectedIndex()!=-1)
 	                {
-	                    //System.out.println("troll haunter");
 	                    per_modificar = (Persona) listModel.getElementAt(listPersonas.getSelectedIndex());
-	                    //System.out.println(per_modificar);
 	                    txtDni.setText(per_modificar.getDni());
 	                    txtNombre.setText(per_modificar.getNombre());
 	                    txtApellido.setText(per_modificar.getApellido());
@@ -161,7 +158,7 @@ public class PanelModificarPersonas extends JPanel
         {
             listModel.add(i, personas.get(i));
         }
-        System.out.println(listModel.size());
+        //System.out.println(listModel.size());
         listPersonas.setModel(listModel);
 	}
 	public void mostrarMensaje(String mensaje)

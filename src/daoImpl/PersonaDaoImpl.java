@@ -19,7 +19,7 @@ public class PersonaDaoImpl implements PersonaDao {
 	private static final String existe = "SELECT * FROM Personas where dni= ?";
 	
 	//metodo para modificar una persona
-	public boolean modificar(Persona persona)
+	public boolean modificar(Persona persona, String dni)
 	{
 		PreparedStatement statement;
 		Connection conexion = Conexion.getConexion().getSQLConexion();
@@ -31,7 +31,7 @@ public class PersonaDaoImpl implements PersonaDao {
 			statement.setString(1, persona.getDni());
 			statement.setString(2, persona.getNombre());
 			statement.setString(3, persona.getApellido());
-			statement.setString(4, persona.getDni());
+			statement.setString(4, dni);
 			statement.executeUpdate();
 
 			if(statement.executeUpdate() > 0)
@@ -40,9 +40,17 @@ public class PersonaDaoImpl implements PersonaDao {
 				isUpdateExitoso = true;
 			}
 		} 
-		catch (Exception e) 
+		catch (SQLException e) 
 		{
 			e.printStackTrace();
+			try 
+			{
+				conexion.rollback();
+			} 
+			catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
 		}
 		return isUpdateExitoso;
 	}
@@ -131,12 +139,12 @@ public class PersonaDaoImpl implements PersonaDao {
 		Connection conexion = Conexion.getConexion().getSQLConexion();
 		boolean existePersona = false;
 		
-		int dnii= Integer.parseInt(dni);
+		String dnii= (dni);
 		
 		try 
 		{
 			statement= conexion.prepareStatement(existe);
-			statement.setInt(1, dnii);
+			statement.setString(1, dnii);
 			ResultSet rs= statement.executeQuery();
 
 			while(rs.next())

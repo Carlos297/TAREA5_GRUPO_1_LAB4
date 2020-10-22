@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionListener;
 import daoImpl.PersonaDaoImpl;
 import entidad.Persona;
 import negocio.PersonaNegocio;
+import negocioImpl.PersonaNegocioImpl;
 import presentacion.vista.PanelAgregarPersonas;
 import presentacion.vista.PanelEliminarPersonas;
 import presentacion.vista.PanelListarPersonas;
@@ -104,7 +105,7 @@ public class Controlador implements ActionListener{
 		});
 		 
 		//Eventos PanelModificarPersonas (ACA ESTA EL PROBLEMA)!!!!******************
-		// this.pnlModificar.getBtnModificar().addActionListener(a->EventoClickBoton_ModificarPesona_PanelModificarPersonas(a));
+		this.pnlModificar.getBtnModificar().addActionListener(a->EventoClickBoton_ModificarPesona_PanelModificarPersonas(a));
 
 	}
 	
@@ -157,6 +158,7 @@ public class Controlador implements ActionListener{
 			if(!txtNombre.equals("")&& !txtApellido.equals("") && !txtDni.equals(""))
 			{
 				PersonaDaoImpl pdi= new PersonaDaoImpl();
+
 				String dni=txtDni;
 				
 				if(pdi.verificarPersona(dni)==false)
@@ -186,19 +188,22 @@ public class Controlador implements ActionListener{
 		
 	}
 	
-	//EventoClickBoton modificar persona en PanelModificarPersonas
+	//EventoClickBoton modificar persona en PanelModificarPersonas	
 	public void EventoClickBoton_ModificarPesona_PanelModificarPersonas(ActionEvent s) 
 	{
 		String dni_Modificar = this.pnlModificar.getTxtDni().getText();
 		String nombre_Modificar = this.pnlModificar.getTxtNombre().getText();
 		String apellido_Modificar = this.pnlModificar.getTxtApellido().getText();
+		String dniOriginal = this.pnlModificar.listPersonas.getSelectedValue().getDni();
 		Persona personaMod = new Persona();
 		personaMod.setDni(dni_Modificar);
 		personaMod.setNombre(nombre_Modificar);
 		personaMod.setApellido(apellido_Modificar);
 		boolean estado=false;
 		String mensaje;
-		estado = pNeg.modificar(personaMod);
+		//Para verificar que datos estan viajando
+		//JOptionPane.showMessageDialog(null, personaMod+" "+dniOriginal);
+		estado = pNeg.modificar(personaMod,dniOriginal);
 		if(estado==true)
 		{
 			mensaje="Persona MODIFICADA con exito";	
@@ -211,6 +216,7 @@ public class Controlador implements ActionListener{
 		this.pnlModificar.mostrarMensaje(mensaje);
 		
 	}
+	
 	
 	//EventoClickBoton borrar persona en PanelEliminarPersonas
 	public void EventoClickBoton_BorrarPesona_PanelEliminarPersonas(ActionEvent s)
